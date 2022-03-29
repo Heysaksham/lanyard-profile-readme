@@ -17,7 +17,7 @@ In a `README.md` file, include the following, replacing `:id` with your Discord 
 
 It should display something similar to the following (I am using my Discord user ID as an example):
 
-[![Discord Presence](https://lanyard.cnrad.dev/api/705665813994012695)](https://discord.com/users/705665813994012695)
+[![Discord Presence](https://lanyard.cnrad.dev/api/852568620012797972)](https://discord.com/users/852568620012797972)
 
 When others click it, they will be directed to your actual Discord profile. Neat!
 
