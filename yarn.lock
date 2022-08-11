@@ -3399,6 +3399,11 @@ url@^0.11.0:
     punycode "1.3.2"
     querystring "0.2.0"
 
+use-smooth-count@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/use-smooth-count/-/use-smooth-count-0.3.0.tgz#3fc17d3953160b061a4f02f44df828d5ac88cbee"
+  integrity sha512-JM8t0OZH4T79LXm1JLZpUXGzZREP8JdL0LYhrZnwCOEKiMt47OT+oitgo0opfc1Dtl1Gd/NclQZiCFzGMo82yQ==
+
 use-subscription@1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/use-subscription/-/use-subscription-1.5.1.tgz#73501107f02fad84c6dd57965beb0b75c68c42d1"

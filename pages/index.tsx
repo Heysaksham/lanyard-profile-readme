@@ -1,13 +1,17 @@
 import Head from "next/head";
 import styled, { createGlobalStyle } from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { useSmoothCount } from "use-smooth-count";
 
-export default function Home() {
-    const [userCount, setUserCount] = useState<null | number>(null);
+export default function Home({ userCount }: { userCount: number }) {
     const [userId, setUserId] = useState<null | string>(null);
     const [userError, setUserError] = useState<string>();
     const [copyState, setCopyState] = useState("Copy");
+
+    const countRef = useRef<HTMLDivElement | null>(null);
+    const counter = useSmoothCount({ ref: countRef, target: userCount, duration: 3, curve: [0, 1, 0, 1] });
+
     const copy = () => {
         navigator.clipboard.writeText(
             `[![Discord Presence](https://lanyard.cnrad.dev/api/${userId})](https://discord.com/users/${userId})`
@@ -16,13 +20,6 @@ export default function Home() {
 
         setTimeout(() => setCopyState("Copy"), 1500);
     };
-
-    useEffect(() => {
-        (async () => {
-            let userCount = await axios.get("/api/getUserCount").then(res => res.data);
-            setUserCount(userCount.count);
-        })();
-    }, []);
 
     useEffect(() => {
         (async () => {
@@ -94,10 +91,22 @@ export default function Home() {
                 </Container>
             </Main>
             <FooterStat>
-                Lanyard Profile Readme has <b>{userCount}</b> total users!
+                Lanyard Profile Readme has <div style={{ fontWeight: "bold", width: "2.75rem" }} ref={countRef} /> total
+                users!
             </FooterStat>
         </>
     );
+}
+
+export async function getServerSideProps(ctx: any) {
+    let userCount = await axios
+        .get("https://lanyard.cnrad.dev/api/getUserCount", { timeout: 1000 })
+        .then(res => res.data.count)
+        .catch(() => 1000);
+
+    return {
+        props: { userCount },
+    };
 }
 
 const GlobalStyle = createGlobalStyle`
@@ -211,13 +220,15 @@ const ActionButton = styled.button`
 const Example = styled.img`
     display: block;
     margin: 30px auto 0px;
-    // border-radius: 0.7rem;
-    // border: solid 1px #333;
     max-width: 100%;
 `;
 
 const FooterStat = styled.div`
     position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     line-height: 1rem;
     bottom: 1rem;
     left: 50%;
@@ -228,7 +239,13 @@ const FooterStat = styled.div`
     border-radius: 0.5rem;
     text-align: center;
     box-shadow: 0 2px 15px -10px #a21caf;
-    min-width: 275px;
+    min-width: 400px;
+
+    @media (max-width: 400px) {
+        font-size: 14px;
+        min-width: 365px;
+        padding: 0.75rem 1rem;
+    }
 
     &:before {
         content: "";
